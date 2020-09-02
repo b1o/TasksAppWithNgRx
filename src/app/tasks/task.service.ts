@@ -13,6 +13,9 @@ export class TaskService {
   public createTask(task: Task) {
     console.log('creating task');
     const id = uuid();
+
+    task.subTasks.map(subtask  => ({...subtask, id: uuid()}))
+
     return of({ ...task, id }).pipe(delay(1000));
   }
 

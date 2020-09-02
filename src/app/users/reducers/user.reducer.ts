@@ -17,20 +17,19 @@ const userReducer = createReducer(
     adapter.addOne({ ...user, id: uuid() }, state)
   ),
 
-  on(TaskActions.CreateTask, (state, { task }) => {
+  on(TaskActions.CreatTaskSuccess, (state, { task }) => {
     const users = task.users;
     const stateEntities = { ...state.entities };
 
-    const updatedEntities = {}
+    const updatedEntities = {};
 
     for (const user of users) {
-      const stateUser = {...stateEntities[user.id]};
+      const stateUser = { ...stateEntities[user.id] };
       stateUser.tasksIds = [...stateUser.tasksIds, task.id];
 
       updatedEntities[stateUser.id] = stateUser;
     }
-
-    return { ...state, entities: {...stateEntities, ...updatedEntities} };
+    return { ...state, entities: { ...stateEntities, ...updatedEntities } };
   }),
 
   on(UserActions.CreateMultipleUsers, (state, { users }) =>

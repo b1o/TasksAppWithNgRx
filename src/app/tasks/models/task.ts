@@ -8,4 +8,6 @@ export interface Task {
   status: TaskSatus;
   users?: User[];
   userIds: string[];
+
+  subTasks: Task[];
 }

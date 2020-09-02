@@ -1,5 +1,5 @@
 import { Component, OnInit, Optional, Inject } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { TaskSatus } from '../../models/task-status';
 import { Store } from '@ngrx/store';
 import { RootState, selectTaskById, selectAllUsers } from '../../../root.state';
@@ -39,6 +39,7 @@ export class CreateTaskPageComponent implements OnInit {
       description: ['', Validators.required],
       status: TaskSatus.PENDING,
       users: [[]],
+      subTasks: this.fb.array([]),
     });
 
     this.allUsers = this.store.select(selectAllUsers);
@@ -52,6 +53,22 @@ export class CreateTaskPageComponent implements OnInit {
           .subscribe((task) => this.createTaskForm.patchValue(task));
       }
     });
+  }
+
+  get subtasks(): FormArray {
+    return this.createTaskForm.get('subTasks') as FormArray;
+  }
+
+  addSubtask() {
+    const groupControl = this.fb.group({
+      name: '',
+      description: '',
+      status: TaskSatus.PENDING,
+      users: [[]],
+    });
+
+    this.subtasks.push(groupControl);
+    console.log(this.createTaskForm);
   }
 
   submit() {

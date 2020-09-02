@@ -13,29 +13,37 @@
 
     <mat-card-content>
       <div class="fields">
-        <mat-form-field>
-          <mat-label>Name</mat-label>
-          <input type="text" matInput formControlName="name" />
-        </mat-form-field>
+        <ng-container
+          *ngTemplateOutlet="taskForm; context: { formControl: createTaskForm }"
+        ></ng-container>
+      </div>
+      <mat-divider></mat-divider>
+      <div class="sub-tasks">
+        <div class="header">
+          <strong>Subtasks</strong>
+          <button type="button" (click)="addSubtask()" mat-button>Add Subtask</button>
+        </div>
+        <mat-accordion>
+          <mat-expansion-panel
+            *ngFor="
+              let taskControl of subtasks.controls;
+              let subTaskIndex = index
+            "
+          >
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                SubTask #{{ subTaskIndex + 1 }}
+              </mat-panel-title>
+            </mat-expansion-panel-header>
 
-        <mat-form-field>
-          <mat-label>Description</mat-label>
-          <textarea matInput formControlName="description"></textarea>
-        </mat-form-field>
-
-        <mat-form-field>
-          <mat-label>Status</mat-label>
-          <mat-select formControlName="status">
-            <mat-option *ngFor="let status of taskStatus" [value]="status">{{
-              status
-            }}</mat-option>
-          </mat-select>
-        </mat-form-field>
-
-        <app-user-select
-          formControlName="users"
-          [allUsers]="allUsers | async"
-        ></app-user-select>
+            <ng-container
+              *ngTemplateOutlet="
+                taskForm;
+                context: { formControl: taskControl, noUsers: true }
+              "
+            ></ng-container>
+          </mat-expansion-panel>
+        </mat-accordion>
       </div>
     </mat-card-content>
     <mat-divider></mat-divider>
@@ -52,3 +60,31 @@
     </mat-card-actions>
   </mat-card>
 </form>
+
+<ng-template #taskForm let-formControl="formControl" let-noUsers="noUsers">
+  <div class="subtask fields" [formGroup]="formControl ? formControl : null">
+    <mat-form-field>
+      <mat-label>Name</mat-label>
+      <input type="text" matInput formControlName="name" />
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Description</mat-label>
+      <textarea matInput formControlName="description"></textarea>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Status</mat-label>
+      <mat-select formControlName="status">
+        <mat-option *ngFor="let status of taskStatus" [value]="status">{{
+          status
+        }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <app-user-select *ngIf="!noUsers"
+      formControlName="users"
+      [allUsers]="allUsers | async"
+    ></app-user-select>
+  </div>
+</ng-template>

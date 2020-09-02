@@ -8,3 +8,21 @@
   flex-direction: column;
 }
 
+.sub-tasks .header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.sub-tasks {
+  height: auto;
+  max-height: 400px;
+  padding: 8px;
+  overflow-y: scroll;
+  margin-top: 16px;
+
+  mat-accordion  {
+    margin-bottom: 4px;
+  }
+}
+

@@ -18,7 +18,7 @@ import {
   MatSnackBarModule,
   MAT_SNACK_BAR_DEFAULT_OPTIONS,
 } from '@angular/material/snack-bar';
-
+import {MatExpansionModule} from '@angular/material/expansion'
 const MODULES = [
   LayoutModule,
   MatAutocompleteModule,
@@ -26,6 +26,7 @@ const MODULES = [
   MatChipsModule,
   MatDialogModule,
   MatSelectModule,
+  MatExpansionModule,
   MatCardModule,
   MatInputModule,
   MatFormFieldModule,
